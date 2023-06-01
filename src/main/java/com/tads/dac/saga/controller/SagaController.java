@@ -2,7 +2,9 @@
 package com.tads.dac.saga.controller;
 
 import com.tads.dac.saga.DTO.ClienteEndDTO;
-import com.tads.dac.saga.sagas.alteraperfil.PerfilSagaService;
+import com.tads.dac.saga.DTO.GerenteDTO;
+import com.tads.dac.saga.sagas.alteraperfil.PerfilSagaServiceInit;
+import com.tads.dac.saga.sagas.inseregerente.InsertGerenteSagaInitService;
 import com.tads.dac.saga.sagas.removegerente.RemoveGerenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,22 +20,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class SagaController {
     
     @Autowired
-    private PerfilSagaService serv;
+    private PerfilSagaServiceInit updatePerfilserv;
     
     @Autowired
-    private RemoveGerenteService gerServ;
+    private RemoveGerenteService gerRemoveServ;
+    
+    @Autowired
+    private InsertGerenteSagaInitService gerInsertServ;
 
     
     @PostMapping("/saga")
     public ResponseEntity<?> sagaUpdateContaLimiteCliente(@RequestBody ClienteEndDTO dto){
         
-        serv.initSaga(dto);
+        updatePerfilserv.initSaga(dto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/saga/ger/{id}")
     public ResponseEntity<?> sagaRemoveGerente(@PathVariable("id") Long id){      
-        gerServ.initSaga(id);
+        gerRemoveServ.initSaga(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @PostMapping("/saga/ger/insert")
+    public ResponseEntity<?> sagaRemoveGerente(@RequestBody GerenteDTO dto){      
+        gerInsertServ.initSagaInsertGerente(dto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     

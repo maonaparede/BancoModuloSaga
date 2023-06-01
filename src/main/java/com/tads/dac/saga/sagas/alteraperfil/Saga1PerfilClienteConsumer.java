@@ -14,9 +14,6 @@ import com.tads.dac.saga.repository.PerfilClienteUpdateRepository;
 
 @Component
 public class Saga1PerfilClienteConsumer {
-    
-    @Autowired
-    private Saga1PerfilClienteProducer current;
  
     @Autowired
     private Saga2PerfilContaProducer next;
@@ -42,7 +39,6 @@ public class Saga1PerfilClienteConsumer {
             return;
         }
         
-           //Deu algum erro
-        
+        //Deu algum erro coloque código pra executar aqui
     }
 }

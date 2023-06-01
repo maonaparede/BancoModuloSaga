@@ -4,7 +4,6 @@
  */
 package com.tads.dac.saga.sagas.removegerente;
 
-import com.tads.dac.saga.DTO.GerenteIdNomeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
