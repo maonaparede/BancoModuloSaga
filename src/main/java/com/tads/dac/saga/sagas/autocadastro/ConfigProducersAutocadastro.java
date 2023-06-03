@@ -38,6 +38,13 @@ public class ConfigProducersAutocadastro {
     public static String queueAutoGerenteReceive = "auto-gerente-saga-receive";
     
     public static String queueAutoGerenteRollback = "auto-gerente-saga-rollback";
+  
+    //3° Passo
+    public static String queueAutoContaUpCommit = "auto-conta-update-saga";
+  
+    public static String queueAutoContaUpReceive = "auto-conta-update-saga-receive";
+    
+    public static String queueAutoContaUpRollback = "auto-conta-update-saga-rollback";
     
     //1° Passo
     @Bean
@@ -88,7 +95,7 @@ public class ConfigProducersAutocadastro {
         return new Queue(queueAutoContaRollback);
     }
     
-    //3° Passo
+    //4° Passo
     @Bean
     public Queue queueAutoGerenteCommit(){
         return new Queue(queueAutoGerenteCommit);
@@ -102,5 +109,21 @@ public class ConfigProducersAutocadastro {
     @Bean
     public Queue queueAutoGerenteRollback(){
         return new Queue(queueAutoGerenteRollback);
+    }
+    
+    //5° Passo
+    @Bean
+    public Queue queueAutoContaUpCommit(){
+        return new Queue(queueAutoContaUpCommit);
+    }
+    
+    @Bean
+    public Queue queueAutoContaUpReceive(){
+        return new Queue(queueAutoContaUpReceive);
+    }
+
+    @Bean
+    public Queue queueAutoContaUpRollback(){
+        return new Queue(queueAutoContaUpRollback);
     }
 }

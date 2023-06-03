@@ -1,12 +1,9 @@
 
 package com.tads.dac.saga.sagas.inseregerente;
 
-import com.tads.dac.saga.sagas.alteraperfil.*;
-import com.tads.dac.saga.DTO.GerenteDTO;
 import com.tads.dac.saga.DTO.GerentePrimeiraContaDTO;
 import com.tads.dac.saga.DTO.MensagemDTO;
 import com.tads.dac.saga.model.InsertGerenteGerente;
-import com.tads.dac.saga.model.PerfilClienteUpdateSaga;
 import com.tads.dac.saga.repository.InsertGerenteGerenteRepository;
 import java.util.Optional;
 import org.modelmapper.ModelMapper;
@@ -14,7 +11,6 @@ import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.tads.dac.saga.util.InterfaceSagaOrquestration;
-import com.tads.dac.saga.repository.PerfilClienteUpdateRepository;
 
 @Component
 public class Saga1InsertGerenteProducer implements InterfaceSagaOrquestration{

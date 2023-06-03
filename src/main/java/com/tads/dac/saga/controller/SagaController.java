@@ -1,9 +1,12 @@
 
 package com.tads.dac.saga.controller;
 
+import com.tads.dac.saga.DTO.ClienteAutocadastroDTO;
 import com.tads.dac.saga.DTO.ClienteEndDTO;
 import com.tads.dac.saga.DTO.GerenteDTO;
+import com.tads.dac.saga.model.AutocadastroCliente;
 import com.tads.dac.saga.sagas.alteraperfil.PerfilSagaServiceInit;
+import com.tads.dac.saga.sagas.autocadastro.SagaAutocadastroInitService;
 import com.tads.dac.saga.sagas.inseregerente.InsertGerenteSagaInitService;
 import com.tads.dac.saga.sagas.removegerente.RemoveGerenteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,9 @@ public class SagaController {
     
     @Autowired
     private InsertGerenteSagaInitService gerInsertServ;
+    
+    @Autowired
+    private SagaAutocadastroInitService autocadastroServ;
 
     
     @PostMapping("/saga")
@@ -45,6 +51,12 @@ public class SagaController {
     @PostMapping("/saga/ger/insert")
     public ResponseEntity<?> sagaRemoveGerente(@RequestBody GerenteDTO dto){      
         gerInsertServ.initSagaInsertGerente(dto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @PostMapping("/saga/cli/auto")
+    public ResponseEntity<?> sagaAutocadastro(@RequestBody ClienteAutocadastroDTO dto){      
+        autocadastroServ.initSagaAutocadastro(dto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     
