@@ -1,6 +1,7 @@
 
 package com.tads.dac.saga.sagas.inseregerente;
 
+import com.tads.dac.saga.DTO.AuthDTO;
 import com.tads.dac.saga.DTO.MensagemDTO;
 import com.tads.dac.saga.model.InsertGerenteConta;
 import com.tads.dac.saga.repository.InsertGerenteContaRepository;
@@ -15,6 +16,9 @@ public class Saga2InsertGerenteContaConsumer {
     
     @Autowired
     private Saga1InsertGerenteProducer prev;
+    
+    @Autowired
+    private Saga3InsertGerenteAuthProducer next;
     
     @Autowired
     private InsertGerenteContaRepository rep;
@@ -32,6 +36,10 @@ public class Saga2InsertGerenteContaConsumer {
             model.setSagaId(msg.getSagaId());
             rep.save(model);
             
+            msg.setSendObj(msg.getReturnObj());//AuthDTO 
+            msg.setReturnObj(null); //limpa o campo
+            
+            next.commitOrdem(msg);
             return;
         }
         

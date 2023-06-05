@@ -14,8 +14,8 @@ import org.hibernate.annotations.CreationTimestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class InsertGerenteConta {
-
+public class InsertGerenteAuth {
+ 
     @Id
     private Long sagaId;
     
@@ -23,9 +23,9 @@ public class InsertGerenteConta {
     @Column(name = "data_saga")
     private Date dataTempo;
     
-    private Long idConta;
-    private Long gerenteIdNew;
-    private String gerenteNomeNew;
-    private Long gerenteIdOld;
-    private String gerenteNomeOld;    
+    private String email;
+    private String senha;
+    private String salt;
+    private String tipoUser;
+    
 }

@@ -22,7 +22,13 @@ public class ConfigProducersInsertGerente {
     public static String queueGerenteInsertContaReceive = "ger-save-conta-saga-receive";
     
     public static String queueGerenteInsertContaRollback = "ger-save-conta-saga-rollback";
+  
+    //3° Passo
+    public static String queueGerenteInsertAuthCommit = "ger-save-auth-saga";
+  
+    public static String queueGerenteInsertAuthReceive = "ger-save-auth-saga-receive";
     
+    public static String queueGerenteInsertAuthRollback = "ger-save-auth-saga-rollback";
     
     //1° Passo
     @Bean
@@ -54,6 +60,22 @@ public class ConfigProducersInsertGerente {
     @Bean
     public Queue queueGerenteInsertContaRollback(){
         return new Queue(queueGerenteInsertContaRollback);
+    }
+    
+    //3° Passo
+    @Bean
+    public Queue queueGerenteInsertAuthCommit(){
+        return new Queue(queueGerenteInsertAuthCommit);
+    }
+    
+    @Bean
+    public Queue queueGerenteInsertAuthReceive(){
+        return new Queue(queueGerenteInsertAuthReceive);
+    }
+    
+    @Bean
+    public Queue queueGerenteInsertAuthRollback(){
+        return new Queue(queueGerenteInsertAuthRollback);
     }
     
 }

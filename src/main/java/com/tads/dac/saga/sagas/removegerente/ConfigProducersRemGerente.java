@@ -29,6 +29,10 @@ public class ConfigProducersRemGerente {
     
     public static String queueGerenteRemGerenteRollback = "ger-rem-gerente-saga-rollback";
     
+    //3° Passo
+    public static String queueGerenteRemAuthCommit = "ger-rem-auth-saga";
+    
+    public static String queueGerenteRemAuthReceive = "ger-rem-auth-saga-receive";
     
     //1° Passo
     @Bean
@@ -71,5 +75,16 @@ public class ConfigProducersRemGerente {
     @Bean
     public Queue queueGerenteRemGerenteReceive(){
         return new Queue(queueGerenteRemGerenteReceive);
+    }
+    
+    //4° Passo
+    @Bean
+    public Queue queueGerenteRemAuthCommit(){
+        return new Queue(queueGerenteRemAuthCommit);
+    }
+
+    @Bean
+    public Queue queueGerenteRemAuthReceive(){
+        return new Queue(queueGerenteRemAuthReceive);
     }
 }

@@ -1,6 +1,7 @@
 
 package com.tads.dac.saga.sagas.inseregerente;
 
+import com.tads.dac.saga.DTO.AuthDTO;
 import com.tads.dac.saga.DTO.MensagemDTO;
 import com.tads.dac.saga.model.InsertGerenteGerente;
 import com.tads.dac.saga.repository.InsertGerenteGerenteRepository;
@@ -17,9 +18,6 @@ public class Saga1InsertGerenteConsumer {
     private Saga2InsertGerenteContaProducer next;
     
     @Autowired
-    private Saga1InsertGerenteProducer current;
-    
-    @Autowired
     private ModelMapper mapper;
     
     @Autowired
@@ -34,8 +32,14 @@ public class Saga1InsertGerenteConsumer {
 
             msg.setSagaId(model.getSagaId()); //Salva o id do saga
             
-            msg.setReturnObj(null); //Limpa o campo que não precisa
-        
+            //Só vai ser usado no 3° Passo do Saga            
+            AuthDTO dto = new AuthDTO();
+            dto.setEmail(model.getEmail());
+            dto.setSenha("1234");
+            dto.setTipoUser("G");
+            msg.setReturnObj(dto);
+            
+            
             next.commitOrdem(msg);
             return;
         }
