@@ -5,15 +5,16 @@ import com.tads.dac.saga.DTO.ClienteEndDTO;
 import com.tads.dac.saga.DTO.MensagemDTO;
 import com.tads.dac.saga.model.AutocadastroCliente;
 import com.tads.dac.saga.repository.AutocadastroClienteRepository;
+import com.tads.dac.saga.util.EnviarEmail;
+import com.tads.dac.saga.util.TemplateEmailAutocadastroErro;
 import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.tads.dac.saga.util.InterfaceSagaOrquestration;
 
 @Component
-public class Saga1AutocadastroClienteProducer implements InterfaceSagaOrquestration{
+public class Saga1AutocadastroClienteProducer{
 
     @Autowired
     private AmqpTemplate template;
@@ -24,14 +25,15 @@ public class Saga1AutocadastroClienteProducer implements InterfaceSagaOrquestrat
     @Autowired
     private AutocadastroClienteRepository rep;
 
+    @Autowired
+    private EnviarEmail email;
     
     //Primeiro da sequencia
-    @Override
     public void commitOrdem(MensagemDTO dto) {
         template.convertAndSend(ConfigProducersAutocadastro.queueAutoClienteCommit, dto);
     }
 
-    @Override
+    
     public void rollbackOrdem(MensagemDTO msg) {
         if(msg.getSagaId() != null){
             Optional<AutocadastroCliente> model = rep.findById(msg.getSagaId());
@@ -42,6 +44,14 @@ public class Saga1AutocadastroClienteProducer implements InterfaceSagaOrquestrat
                 //Faz alguma coisa
                 rep.deleteById(msg.getSagaId());
                 
+                TemplateEmailAutocadastroErro emailMsg =
+                        new TemplateEmailAutocadastroErro(dto.getEmail(), msg.getMensagem());
+                
+                try{
+                    email.sendEmail(emailMsg);
+                }catch(Exception e){
+                    System.out.println("Erro ao enviar o email: " + e.getMessage());
+                }
             }else{
                 System.err.println("Id Não Existe - Rollback de Saga1AutocadastroClienteProducer");
             }

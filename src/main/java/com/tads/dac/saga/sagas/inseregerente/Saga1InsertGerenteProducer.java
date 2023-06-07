@@ -10,10 +10,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.tads.dac.saga.util.InterfaceSagaOrquestration;
 
 @Component
-public class Saga1InsertGerenteProducer implements InterfaceSagaOrquestration{
+public class Saga1InsertGerenteProducer{
 
     @Autowired
     private AmqpTemplate template;
@@ -26,12 +25,11 @@ public class Saga1InsertGerenteProducer implements InterfaceSagaOrquestration{
 
     
     //Primeiro da sequencia
-    @Override
     public void commitOrdem(MensagemDTO dto) {
         template.convertAndSend(ConfigProducersInsertGerente.queueGerenteInsertGerente, dto);
     }
 
-    @Override
+    
     public void rollbackOrdem(MensagemDTO msg) {
         if(msg.getSagaId() != null){
             Optional<InsertGerenteGerente> model = rep.findById(msg.getSagaId());

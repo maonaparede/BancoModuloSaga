@@ -6,6 +6,7 @@ import com.tads.dac.saga.DTO.ClienteEndDTO;
 import com.tads.dac.saga.DTO.GerenteDTO;
 import com.tads.dac.saga.model.AutocadastroCliente;
 import com.tads.dac.saga.sagas.alteraperfil.PerfilSagaServiceInit;
+import com.tads.dac.saga.sagas.aprovaCliente.SagaAprovaClienteInitService;
 import com.tads.dac.saga.sagas.autocadastro.SagaAutocadastroInitService;
 import com.tads.dac.saga.sagas.inseregerente.InsertGerenteSagaInitService;
 import com.tads.dac.saga.sagas.removegerente.RemoveGerenteService;
@@ -34,29 +35,42 @@ public class SagaController {
     @Autowired
     private SagaAutocadastroInitService autocadastroServ;
 
+    @Autowired
+    private SagaAprovaClienteInitService aprovaClienteServ;
     
+    //R4 - CUD
     @PostMapping("/saga")
-    public ResponseEntity<?> sagaUpdateContaLimiteCliente(@RequestBody ClienteEndDTO dto){
+    public ResponseEntity<?> sagaUpdatePerfilCliente(@RequestBody ClienteEndDTO dto){
         
         updatePerfilserv.initSaga(dto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    //R18 - CUD
     @PostMapping("/saga/ger/{id}")
     public ResponseEntity<?> sagaRemoveGerente(@PathVariable("id") Long id){      
         gerRemoveServ.initSaga(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     
+    //R17
     @PostMapping("/saga/ger/insert")
-    public ResponseEntity<?> sagaRemoveGerente(@RequestBody GerenteDTO dto){      
+    public ResponseEntity<?> sagaInsertGerente(@RequestBody GerenteDTO dto){      
         gerInsertServ.initSagaInsertGerente(dto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     
+    //R1
     @PostMapping("/saga/cli/auto")
     public ResponseEntity<?> sagaAutocadastro(@RequestBody ClienteAutocadastroDTO dto){      
         autocadastroServ.initSagaAutocadastro(dto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    //R18 - CUD
+    @PostMapping("/saga/cli/apro/{id}")
+    public ResponseEntity<?> sagaAprovaCliente(@PathVariable("id") Long id){      
+        aprovaClienteServ.initSagaAutocadastro(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     

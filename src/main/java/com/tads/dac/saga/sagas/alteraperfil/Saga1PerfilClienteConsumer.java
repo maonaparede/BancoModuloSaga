@@ -1,6 +1,7 @@
 
 package com.tads.dac.saga.sagas.alteraperfil;
 
+import com.tads.dac.saga.DTO.AuthDTO;
 import com.tads.dac.saga.DTO.ClienteEndDTO;
 import com.tads.dac.saga.DTO.MensagemDTO;
 import com.tads.dac.saga.model.PerfilClienteUpdateSaga;
@@ -28,12 +29,10 @@ public class Saga1PerfilClienteConsumer {
     public void receiveMsg(@Payload MensagemDTO msg) {
         if(msg.getMensagem() == null){
             
-            PerfilClienteUpdateSaga model = mapper.map(msg.getReturnObj(), PerfilClienteUpdateSaga.class);
+            PerfilClienteUpdateSaga model = mapper.map(msg.getSendObj(), PerfilClienteUpdateSaga.class);
             model = rep.save(model);
-            ClienteEndDTO dto = mapper.map(msg.getSendObj(), ClienteEndDTO.class);
 
             msg.setSagaId(model.getSagaId());
-            msg.setSendObj(dto);
         
             next.commitOrdem(msg);
             return;

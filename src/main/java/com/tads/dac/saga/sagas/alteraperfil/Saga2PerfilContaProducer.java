@@ -7,16 +7,12 @@ import com.tads.dac.saga.model.PerfilContaUpdateSaga;
 import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.tads.dac.saga.util.InterfaceSagaOrquestration;
-import org.springframework.context.annotation.Scope;
-import org.springframework.messaging.handler.annotation.Payload;
 import com.tads.dac.saga.repository.PerfilContaUpdateRepository;
 
 @Component
-public class Saga2PerfilContaProducer implements InterfaceSagaOrquestration{
+public class Saga2PerfilContaProducer {
 
     @Autowired
     private AmqpTemplate template;
@@ -25,16 +21,18 @@ public class Saga2PerfilContaProducer implements InterfaceSagaOrquestration{
     private ModelMapper mapper;
     
     @Autowired
+    private Saga1PerfilClienteProducer prev;
+    
+    @Autowired
     private PerfilContaUpdateRepository rep;
 
 
     //ClienteEndDTO
-    @Override
     public void commitOrdem(MensagemDTO dto) {        
         template.convertAndSend(ConfigProducersPerfil.queuePerfilConta, dto);       
     }
 
-    @Override
+    
     public void rollbackOrdem(MensagemDTO msg) {
         if(msg.getSagaId() != null){
             Optional<PerfilContaUpdateSaga> conta = rep.findById(msg.getSagaId());
@@ -45,11 +43,12 @@ public class Saga2PerfilContaProducer implements InterfaceSagaOrquestration{
                 
                 //Faz alguma coisa
                 rep.deleteById(msg.getSagaId());
+                prev.rollbackOrdem(msg);
             }else{
-                System.err.println("Id Não Existe - Rollback de PerfilContaProducer");
+                System.err.println("Id Não Existe - Rollback de Saga2PerfilContaProducer");
             }
         }else{
-            System.err.println("Id não pode ser Null - Rollback de PerfilContaProducer");
+            System.err.println("Id não pode ser Null - Rollback de Saga2PerfilContaProducer");
         }
     }
     

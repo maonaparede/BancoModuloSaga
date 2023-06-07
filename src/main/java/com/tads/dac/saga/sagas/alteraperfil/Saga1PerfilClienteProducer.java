@@ -9,11 +9,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.tads.dac.saga.util.InterfaceSagaOrquestration;
 import com.tads.dac.saga.repository.PerfilClienteUpdateRepository;
 
 @Component
-public class Saga1PerfilClienteProducer implements InterfaceSagaOrquestration{
+public class Saga1PerfilClienteProducer{
 
     @Autowired
     private AmqpTemplate template;
@@ -26,12 +25,11 @@ public class Saga1PerfilClienteProducer implements InterfaceSagaOrquestration{
 
     
     //Primeiro da sequencia
-    @Override
     public void commitOrdem(MensagemDTO dto) {
         template.convertAndSend(ConfigProducersPerfil.queuePerfilCliente, dto);
     }
 
-    @Override
+    
     public void rollbackOrdem(MensagemDTO msg) {
         if(msg.getSagaId() != null){
             Optional<PerfilClienteUpdateSaga> model = rep.findById(msg.getSagaId());
@@ -43,10 +41,10 @@ public class Saga1PerfilClienteProducer implements InterfaceSagaOrquestration{
                 rep.deleteById(msg.getSagaId());
                 
             }else{
-                System.err.println("Id Não Existe - Rollback de PerfilClienteProducer");
+                System.err.println("Id Não Existe - Rollback de Saga1PerfilClienteProducer");
             }
         }else{
-            System.err.println("Id não pode ser Null - Rollback de PerfilClienteProducer");
+            System.err.println("Id não pode ser Null - Rollback de Saga1PerfilClienteProducer");
         }
     }
     
